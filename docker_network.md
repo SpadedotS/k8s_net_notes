@@ -207,10 +207,11 @@ vagrant@controlplane:~$ ./calicoctl ipam show --show-blocks --allow-version-mism
   cilium在业务流量传输上说，各个节点的网口设置较为简单，多数依靠bpf程序进行
   - 对于每个业务容器，各自有一个netns，起一个veth pair，一端在pod内，一端在母机netns（命名为cil_lxc*）。
   - 每个Node上各起一个vxlan口，名为cilium_vxlan。
-  - 在母机netns的物理设备（eth0）的出入向、cilium_vxlan的出入向、cil_lxc口的入向挂载bpf程序。
+  - 在cilium_vxlan的出入向、cil_lxc口的入向挂载bpf程序。
   （代码较多，另开文章讲解，本文仅用流程图叙述主要逻辑）
 ![](./image/cilium_overlay_mode.drawio.svg)
-  + [image here: cilium tc logic]
+![出方向流程](./image/cilium_pod2pod_TX.drawio.svg)
+![入方向流程](./image/cilium_pod2pod_RX.drawio.svg)
 
 
 由这些CNI的实现可以看出，目前CNI的开发趋势有如下几点
